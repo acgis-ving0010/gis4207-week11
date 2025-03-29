@@ -51,13 +51,16 @@ def create_polyline_fc(input, output, sr):
         polylines.append(new_polyline)
 
     # save polylines in list of polylines to out shp file
-    sr = arcpy.SpatialReference(sr)
+    sp_ref = arcpy.SpatialReference(sr)
     ws = os.path.dirname(output)
     arcpy.env.workspace = ws
     if not arcpy.Exists(os.path.dirname(output)):
         os.mkdir(os.path.dirname(output))
     if not arcpy.Exists(output):
-        arcpy.management.CreateFeatureclass(os.path.dirname(output), os.path.basename(output), "POLYLINE")
+        arcpy.management.CreateFeatureclass(os.path.dirname(output), 
+                                            os.path.basename(output), 
+                                            geometry_type="POLYLINE",
+                                            spatial_reference=sp_ref)
 
     with arcpy.da.InsertCursor(output, ["SHAPE@"]) as cursor:
         for p in polylines:

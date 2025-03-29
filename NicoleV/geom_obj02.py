@@ -45,11 +45,14 @@ def create_polyline_fc(input, output, sr):
 
     # create a polyline for each ID using array from list of line ID points
     polylines = []
+    
+    sp_ref = arcpy.SpatialReference(sr)
+
     for key,value in stored_pts.items():
         print(f"Creating wkt linestring for ID {key}")
         pts_list = value
         new_linestring = f"LINESTRING ({', '.join(pts_list)})"
-        new_polyline = arcpy.FromWKT(new_linestring, arcpy.SpatialReference(sr))
+        new_polyline = arcpy.FromWKT(new_linestring)
         polylines.append(new_polyline)
 
     # save polylines in list of polylines to out shp file
@@ -58,7 +61,10 @@ def create_polyline_fc(input, output, sr):
     if not arcpy.Exists(os.path.dirname(output)):
         os.mkdir(os.path.dirname(output))
     if not arcpy.Exists(output):
-        arcpy.management.CreateFeatureclass(os.path.dirname(output), os.path.basename(output), "POLYLINE")
+        arcpy.management.CreateFeatureclass(os.path.dirname(output), 
+                                            os.path.basename(output), 
+                                            geometry_type = "POLYLINE", 
+                                            spatial_reference=sp_ref)
 
     with arcpy.da.InsertCursor(output, ["SHAPE@"]) as cursor:
         for p in polylines:
