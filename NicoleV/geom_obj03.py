@@ -11,7 +11,7 @@ def get_stop_id_to_da_data():
     stop_id_to_buffer = {}
     stop_id_field = arcpy.AddFieldDelimiters(stops_workspace, 'stop_id')
     stop_name_field = arcpy.AddFieldDelimiters(stops_workspace, 'stop_name')
-    where_clause = f"{stop_id_field}='CI380'"
+    #where_clause = f"{stop_id_field}='CI380' AND {stop_name_field} LIKE '%{stop_name}%'"
     where_clause = f"{stop_name_field} LIKE '%{stop_name}%'"
     arcpy.env.workspace = stops_workspace
 
@@ -20,6 +20,7 @@ def get_stop_id_to_da_data():
                            ['stop_id','SHAPE@', 'stop_name'], 
                            where_clause=where_clause) as cursor:
         for row in cursor:
+            print(row)
             stopid = row[0]
             shape = row[1]
         # create a 150m bugger for each stop id
