@@ -13,7 +13,7 @@ def get_stop_id_to_da_data():
     where_clause = f"{stop_name_field} LIKE '%{stop_name}%'"
     arcpy.env.workspace = stops_workspace
 
-# select bus stops where stop_id is CI380 and stop_name is GLADSTONE
+# select bus stops where stop_name is GLADSTONE
     with arcpy.da.SearchCursor(stop_id_fc, 
                            ['stop_id','SHAPE@', 'stop_name'], 
                            where_clause=where_clause) as cursor:
