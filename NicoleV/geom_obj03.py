@@ -9,9 +9,7 @@ da_population_field = None
 
 def get_stop_id_to_da_data():
     stop_id_to_buffer = {}
-    stop_id_field = arcpy.AddFieldDelimiters(stops_workspace, 'stop_id')
     stop_name_field = arcpy.AddFieldDelimiters(stops_workspace, 'stop_name')
-    #where_clause = f"{stop_id_field}='CI380' AND {stop_name_field} LIKE '%{stop_name}%'"
     where_clause = f"{stop_name_field} LIKE '%{stop_name}%'"
     arcpy.env.workspace = stops_workspace
 
